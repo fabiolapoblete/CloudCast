@@ -21,7 +21,7 @@ async function getWeather(city) {
     console.log(weatherData);
 
     detailsHeader.innerHTML = `
-    Weather details for ${city}
+    Weather details for ${weatherData.name}
     <hr>
     `;
 
