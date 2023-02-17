@@ -1,6 +1,6 @@
 # CloudCast
 
-## Created a simple weather app using API from OpenWeather[https://openweathermap.org/] and map from Leaflet[https://leafletjs.com/]
+## Created a simple weather app using API from [OpenWeather](https://openweathermap.org/) and map from [Leaflet](https://leafletjs.com/)
 
 ## Functionality
 - Search for a city and get data for different weather parameters
