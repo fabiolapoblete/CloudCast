@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -13,24 +14,37 @@ body {
 }
 
 h1 {
-    font-size: 40px;
+    font-size: 2.5rem;
 }
 
 h3 {
     font-weight: 400;
-    font-size: 20px;
-    /* color: rgba(245, 245, 245, 0.867); */
+    font-size: 1.3rem;
     color: #222;
 }
 
 h2 {
     font-weight: 500;
-    font-size: 22px;
+    font-size: 1.4rem;
+}
+
+header {
+    display: flex;
+    gap: 1rem;
+}
+
+hr {
+    margin-top: 0.5rem;
+}
+
+img {
+    width: 50px;
+    height: 50px;
 }
 
 #map { 
-    max-width: 500px;
-    height: 280px; 
+    max-width: 31.3rem;
+    height: 17.5rem; 
     margin: 0 auto 2rem auto;
     border: 5px solid white;
     border-radius: 5px;
@@ -45,17 +59,12 @@ h2 {
     margin: 3rem 0;
 }
 
-header {
-    display: flex;
-    gap: 1rem;
-}
-
 .details__header {
-    font-size: 30px;
+    font-size: 1.9rem;
 }
 
 .details__weather {
-    max-width: 800px; 
+    max-width: 50rem; 
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -65,24 +74,19 @@ header {
 }
 
 .weather__cards {
+    width: 12.5rem;
+    height: 15.6rem;
     background-color: #d7d7d7;
-    width: 200px;
-    height: 250px;
+    color: #222;
+    box-shadow: 1px 1px 5px #c3c0c0dd;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
+    text-align: center;
     border-radius: 8px;
     padding: 0.5rem;
-    text-align: center;
-    box-shadow: 1px 1px 5px #c3c0c0dd;
-    color: #222;
-}
-
-img {
-    width: 50px;
-    height: 50px;
 }
 
 .search {
@@ -99,10 +103,10 @@ img {
 }
 
 .search input {
-    height: 40px;
+    height: 2.5rem;
     padding: 5px 5px 10px;
     border-bottom: 2px solid;
-    font-size: 20px;
+    font-size: 1.3rem;
 }
 
 .search input::placeholder {
@@ -111,12 +115,8 @@ img {
 
 .search button {
     font-size: 1rem;
-    padding: 15px 20px;
-    margin-left: 15px;
-    border-radius: 5px;
-    background-color: var(--red);
-    transition: background 0.3s ease-in-out;
-    border: none;
+    padding: 0.9rem 1.3rem;
+    margin-left: 0.9rem;
 }
 
 .hide {
