@@ -1,19 +1,10 @@
-// const apiKey = "daa688489ff2376748ab8a652ddebe5a";
-// let temperatureMax = document.querySelector(".temperatureMax_value");
-// let temperatureMin = document.querySelector(".temperatureMin_value");
-// let wind = document.querySelector(".wind_value");
-// let humidity = document.querySelector(".humidity_value");
-// let pressure = document.querySelector(".pressure_value");
-// let visibility = document.querySelector(".visibility_value");
-// let visibilityIcon = document.querySelector(".icon_visibility");
-// let detailsHeader = document.querySelector(".details__header");
-
 let weatherData = [];
 
 initiate();
 search();
 
 async function getWeather(city) {
+  //Fetches weather data from API for a specific city
   const APIkey = "daa688489ff2376748ab8a652ddebe5a";
   const URL =
     "https://api.openweathermap.org/data/2.5/weather?q=" +
@@ -33,11 +24,13 @@ async function getWeather(city) {
 }
 
 function initiate() {
+  //Default city is shown when the webapp is loaded
   let city = "Stockholm";
   getWeather(city);
 }
 
 function search() {
+  //Eventlistener on the input field. Input value is set as city.
   const input = document.querySelector(".search__bar");
   input.addEventListener("search", (e) => {
     e.preventDefault();
@@ -48,35 +41,49 @@ function search() {
 
 function displayWeatherData() {
   let detailsHeader = document.querySelector(".details__header");
-  detailsHeader.innerHTML = `
-  Weather details for ${weatherData.name}
-  <hr>
-  `;
+  let detailsWeather = document.querySelector(".details__weather");
+  let map = document.getElementById("map");
 
-  let temperatureMax = document.querySelector(".temperatureMax_value");
-  let temperatureMin = document.querySelector(".temperatureMin_value");
-  let wind = document.querySelector(".wind_value");
-  let humidity = document.querySelector(".humidity_value");
-  let pressure = document.querySelector(".pressure_value");
-  let visibility = document.querySelector(".visibility_value");
-  let visibilityIcon = document.querySelector(".icon_visibility");
+  //Make content visible again
+  detailsWeather.classList.remove("hide");
+  map.classList.remove("hide");
 
-  temperatureMax.innerText = Math.round(weatherData.main.temp_max) + " °C";
+  if (weatherData.name == undefined) {
+    //Logic and UI when the input does not match a city in the API
+    detailsHeader.innerHTML = `Sorry there is no weather data for your search`;
+    detailsWeather.classList.toggle("hide");
+    map.classList.toggle("hide");
+  } else {
+    detailsHeader.innerHTML = `
+    Weather details for ${weatherData.name}
+    <hr>
+    `;
 
-  temperatureMin.innerText = Math.round(weatherData.main.temp_min) + " °C";
+    let temperatureMax = document.querySelector(".temperatureMax_value");
+    let temperatureMin = document.querySelector(".temperatureMin_value");
+    let wind = document.querySelector(".wind_value");
+    let humidity = document.querySelector(".humidity_value");
+    let pressure = document.querySelector(".pressure_value");
+    let visibility = document.querySelector(".visibility_value");
+    let visibilityIcon = document.querySelector(".icon_visibility");
 
-  wind.innerText = Math.round(weatherData.wind.speed) + " m/s";
+    temperatureMax.innerText = Math.round(weatherData.main.temp_max) + " °C";
 
-  humidity.innerText = weatherData.main.humidity + " %";
+    temperatureMin.innerText = Math.round(weatherData.main.temp_min) + " °C";
 
-  pressure.innerText = weatherData.main.pressure + " hpa";
+    wind.innerText = Math.round(weatherData.wind.speed) + " m/s";
 
-  visibility.innerText = weatherData.weather[0].description;
+    humidity.innerText = weatherData.main.humidity + " %";
 
-  visibilityIcon.src =
-    "http://openweathermap.org/img/wn/" +
-    weatherData.weather[0].icon +
-    "@2x.png";
+    pressure.innerText = weatherData.main.pressure + " hpa";
+
+    visibility.innerText = weatherData.weather[0].description;
+
+    visibilityIcon.src =
+      "http://openweathermap.org/img/wn/" +
+      weatherData.weather[0].icon +
+      "@2x.png";
+  }
 }
 
 function initializingMap() {
@@ -89,8 +96,10 @@ function initializingMap() {
 }
 
 function displayMap() {
+  //Map from Leaflet
   let lon = weatherData.coord.lon;
   let lat = weatherData.coord.lat;
+  //The map show the location for searched city
   var map = L.map("map").setView([lat, lon], 13);
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
