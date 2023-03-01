@@ -1,54 +1,66 @@
-const apiKey = "daa688489ff2376748ab8a652ddebe5a";
-let temperatureMax = document.querySelector(".temperatureMax_value");
-let temperatureMin = document.querySelector(".temperatureMin_value");
-let wind = document.querySelector(".wind_value");
-let humidity = document.querySelector(".humidity_value");
-let pressure = document.querySelector(".pressure_value");
-let visibility = document.querySelector(".visibility_value");
-let visibilityIcon = document.querySelector(".icon_visibility");
-let detailsHeader = document.querySelector(".details__header");
+// const apiKey = "daa688489ff2376748ab8a652ddebe5a";
+// let temperatureMax = document.querySelector(".temperatureMax_value");
+// let temperatureMin = document.querySelector(".temperatureMin_value");
+// let wind = document.querySelector(".wind_value");
+// let humidity = document.querySelector(".humidity_value");
+// let pressure = document.querySelector(".pressure_value");
+// let visibility = document.querySelector(".visibility_value");
+// let visibilityIcon = document.querySelector(".icon_visibility");
+// let detailsHeader = document.querySelector(".details__header");
 
-let city = "Stockholm";
-const input = document.querySelector(".search__bar");
+let weatherData = [];
 
-getWeather(city);
-
-input.addEventListener("search", (e) => {
-  e.preventDefault();
-  city = input.value;
-  console.log(city);
-  getWeather(city);
-});
+initiate();
+search();
 
 async function getWeather(city) {
-  const url =
+  const APIkey = "daa688489ff2376748ab8a652ddebe5a";
+  const URL =
     "https://api.openweathermap.org/data/2.5/weather?q=" +
     city +
     "&units=metric&appid=" +
-    apiKey;
+    APIkey;
 
   try {
-    let response = await fetch(url);
-    let weatherData = await response.json();
-    console.log(weatherData);
+    let response = await fetch(URL);
+    weatherData = await response.json();
 
-    detailsHeader.innerHTML = `
-    Weather details for ${weatherData.name}
-    <hr>
-    `;
-
-    let lon = weatherData.coord.lon;
-    let lat = weatherData.coord.lat;
-    console.log(lon, lat);
-
-    displayWeather(weatherData);
-    displayMap(lat, lon);
+    displayWeatherData();
+    initializingMap();
   } catch (error) {
-    console.log(error);
+    console.log("There was an error with the API ", error);
   }
 }
 
-function displayWeather(weatherData) {
+function initiate() {
+  let city = "Stockholm";
+  getWeather(city);
+}
+
+function search() {
+  const input = document.querySelector(".search__bar");
+  input.addEventListener("search", (e) => {
+    e.preventDefault();
+    let city = input.value;
+    getWeather(city);
+  });
+}
+
+function displayWeatherData() {
+  let detailsHeader = document.querySelector(".details__header");
+  detailsHeader.innerHTML = `
+  Weather details for ${weatherData.name}
+  <hr>
+  `;
+
+  let temperatureMax = document.querySelector(".temperatureMax_value");
+  let temperatureMin = document.querySelector(".temperatureMin_value");
+  let wind = document.querySelector(".wind_value");
+  let humidity = document.querySelector(".humidity_value");
+  let pressure = document.querySelector(".pressure_value");
+  let visibility = document.querySelector(".visibility_value");
+  let visibilityIcon = document.querySelector(".icon_visibility");
+
   temperatureMax.innerText = Math.round(weatherData.main.temp_max) + " °C";
 
   temperatureMin.innerText = Math.round(weatherData.main.temp_min) + " °C";
@@ -67,7 +79,18 @@ function displayWeather(weatherData) {
     "@2x.png";
 }
 
-function displayMap(lat, lon) {
+function initializingMap() {
+  //Fixes problem with map container already being initialized
+  var container = L.DomUtil.get("map");
+  if (container != null) {
+    container._leaflet_id = null;
+  }
+  displayMap();
+}
+
+function displayMap() {
+  let lon = weatherData.coord.lon;
+  let lat = weatherData.coord.lat;
   var map = L.map("map").setView([lat, lon], 13);
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
@@ -76,5 +99,3 @@ function displayMap(lat, lon) {
   }).addTo(map);
   var marker = L.marker([lat, lon]).addTo(map);
 }
-
-// getWeather("Stockholm");
